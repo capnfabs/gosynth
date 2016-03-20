@@ -1,7 +1,7 @@
 package main
 
 import (
-	"time"
+	"fmt"
 
 	"github.com/capnfabs/gosynth"
 	"github.com/gordonklaus/portaudio"
@@ -30,5 +30,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	time.Sleep(3 * time.Second)
+	fmt.Println("Press `Enter` to stop")
+	fmt.Scanln()
 }
