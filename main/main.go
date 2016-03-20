@@ -17,7 +17,11 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	master := gosynth.Mult(gosynth.Constant(0.001), gosynth.Sawtooth(sampleRate/2000))
+	master := gosynth.Mult(
+		gosynth.Constant(0.1),
+		gosynth.Sine(sampleRate*4),
+		gosynth.Sine(sampleRate/220),
+	)
 	stream, err := portaudio.OpenDefaultStream(0, 2, sampleRate, portaudio.FramesPerBufferUnspecified, master.PortAudioCallback())
 	if err != nil {
 		panic(err)
