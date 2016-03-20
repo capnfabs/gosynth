@@ -22,7 +22,7 @@ func main() {
 		gosynth.Sine(sampleRate*4),
 		gosynth.Sine(sampleRate/220),
 	)
-	stream, err := portaudio.OpenDefaultStream(0, 2, sampleRate, portaudio.FramesPerBufferUnspecified, master.PortAudioCallback())
+	stream, err := portaudio.OpenDefaultStream(0, 1, sampleRate, portaudio.FramesPerBufferUnspecified, master.PortAudioCallback())
 	if err != nil {
 		panic(err)
 	}
