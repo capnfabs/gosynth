@@ -10,24 +10,27 @@ import (
 
 const sampleRate = 44100.0
 
+// These are all in discrete period notation, not frequency.
+// - Use [note] * 2 to go down an octave.
+// - Use [note] / 2 to go up an octave.
 var (
 	C  = sampleRate / 261.625565
-	Cs = C * math.Exp2(1.0/12)
+	Cs = C / math.Exp2(1.0/12)
 	Db = Cs
-	D  = C * math.Exp2(2.0/12)
-	Ds = C * math.Exp2(3.0/12)
+	D  = C / math.Exp2(2.0/12)
+	Ds = C / math.Exp2(3.0/12)
 	Eb = Ds
-	E  = C * math.Exp2(4.0/12)
-	F  = C * math.Exp2(5.0/12)
-	Fs = C * math.Exp2(6.0/12)
+	E  = C / math.Exp2(4.0/12)
+	F  = C / math.Exp2(5.0/12)
+	Fs = C / math.Exp2(6.0/12)
 	Gb = Fs
-	G  = C * math.Exp2(7.0/12)
-	Gs = C * math.Exp2(8.0/12)
+	G  = C / math.Exp2(7.0/12)
+	Gs = C / math.Exp2(8.0/12)
 	Ab = Gs
-	A  = C * math.Exp2(9.0/12)
-	As = C * math.Exp2(10.0/12)
+	A  = C / math.Exp2(9.0/12)
+	As = C / math.Exp2(10.0/12)
 	Bb = As
-	B  = C * math.Exp2(11.0/12)
+	B  = C / math.Exp2(11.0/12)
 )
 
 func sine(out [][]float32) {
@@ -46,7 +49,7 @@ func main() {
 		gosynth.Constant(0.1),
 		gosynth.Avg(
 			gosynth.Sawtooth(clock(C)),
-			gosynth.Sawtooth(clock(F)),
+			gosynth.Sawtooth(clock(E)),
 			gosynth.Square(clock(G*2)),
 			//gosynth.Sine(clock(sampleRate/32.70/7)),
 			//gosynth.Sawtooth(sampleRate/660),
