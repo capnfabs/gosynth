@@ -47,7 +47,7 @@ func main() {
 		gosynth.Avg(
 			gosynth.Sawtooth(clock(C)),
 			gosynth.Sawtooth(clock(F)),
-			gosynth.Square(clock(G*2), -1, 1),
+			gosynth.Square(clock(G*2)),
 			//gosynth.Sine(clock(sampleRate/32.70/7)),
 			//gosynth.Sawtooth(sampleRate/660),
 		),
