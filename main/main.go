@@ -33,12 +33,43 @@ var (
 	B  = C / math.Exp2(11.0/12)
 )
 
+var Cmajor = []gosynth.Clock{
+	clock(C),
+	clock(D),
+	clock(E),
+	clock(F),
+	clock(G),
+	clock(A),
+	clock(B),
+	clock(C),
+}
+
+var Cbass = []gosynth.Clock{
+	clock(C) * 4,
+	clock(G) * 4,
+	clock(F) * 4,
+	clock(E) * 4,
+}
+
+var Criff = []gosynth.Clock{
+	clock(C),
+	clock(C),
+	clock(F),
+	clock(E),
+	clock(E),
+	clock(B),
+	clock(C / 2),
+	clock(B),
+}
+
 func sine(out [][]float32) {
 }
 
 func clock(val float64) gosynth.Clock {
 	return gosynth.Clock(val)
 }
+
+var quav = clock(sampleRate / 3)
 
 func main() {
 	err := portaudio.Initialize()
@@ -48,9 +79,13 @@ func main() {
 	master := gosynth.Mult(
 		gosynth.Constant(0.1),
 		gosynth.Avg(
-			gosynth.Sawtooth(clock(C)),
-			gosynth.Sawtooth(clock(E)),
-			gosynth.Square(clock(G*2)),
+			// C chord
+			//gosynth.Sawtooth(clock(E)),
+			//gosynth.Square(clock(G*2)),
+			// End C Chord
+			// Step Sequencer
+			gosynth.SawtoothWithPeriod(gosynth.StepSequencer(quav*8, Cbass)),
+			gosynth.SawtoothWithPeriod(gosynth.StepSequencer(quav, Criff)),
 			//gosynth.Sine(clock(sampleRate/32.70/7)),
 			//gosynth.Sawtooth(sampleRate/660),
 		),
