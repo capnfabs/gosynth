@@ -99,10 +99,13 @@ func genSequence(palette []gosynth.Clock, data []byte, count int) []gosynth.Cloc
 	return ret
 }
 
-func genPalette(baseNote gosynth.Clock, count int) []gosynth.Clock {
-	ret := make([]gosynth.Clock, count)
-	for i := 0; i < count; i++ {
-		ret[i] = gosynth.Clock(float64(baseNote) / math.Exp2(float64(i)/12))
+// Major scale: tone tone semitone tone tone tone semitone.
+var majorScale = []float64{2, 4, 5, 7, 9, 11, 12}
+
+func genPalette(baseNote gosynth.Clock, multiples []float64) []gosynth.Clock {
+	ret := make([]gosynth.Clock, len(multiples))
+	for i := 0; i < len(multiples); i++ {
+		ret[i] = gosynth.Clock(float64(baseNote) / math.Exp2(majorScale[i]/12))
 	}
 	return ret
 }
@@ -114,14 +117,20 @@ func argPlay(args []string) gosynth.Synth {
 	key := keys[int(hash[0])%len(keys)]
 	// Generate a palette based on that key.
 	// 1 octave at the moment.
-	palette := genPalette(key, 13)
+	palette := genPalette(key, majorScale)
+	bassPalette := genPalette(key*4, majorScale)
 	// Now choose a length for each pattern. Min 3, max 8
 	patternLen := int((hash[1] % 5)) + 3
 	seq := genSequence(palette, hash[3:], patternLen)
+	bassSeq := genSequence(bassPalette, hash[8:], patternLen)
 	speedDivider := float32(hash[2] % 5)
 	return gosynth.Mult(
 		gosynth.Constant(0.1),
-		gosynth.SawtoothWithPeriod(gosynth.StepSequencer(gosynth.Clock(sampleRate/speedDivider), seq)),
+		gosynth.Avg(
+			gosynth.SineWithPeriod(gosynth.StepSequencer(gosynth.Clock(sampleRate/speedDivider), seq)),
+			gosynth.Vol(0.4,
+				gosynth.SawtoothWithPeriod(gosynth.StepSequencer(gosynth.Clock(sampleRate/speedDivider*2), bassSeq))),
+		),
 	)
 }
 
