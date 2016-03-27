@@ -14,52 +14,53 @@ const sampleRate = 44100.0
 // - Use [note] * 2 to go down an octave.
 // - Use [note] / 2 to go up an octave.
 var (
-	C  = sampleRate / 261.625565
-	Cs = C / math.Exp2(1.0/12)
-	Db = Cs
-	D  = C / math.Exp2(2.0/12)
-	Ds = C / math.Exp2(3.0/12)
-	Eb = Ds
-	E  = C / math.Exp2(4.0/12)
-	F  = C / math.Exp2(5.0/12)
-	Fs = C / math.Exp2(6.0/12)
-	Gb = Fs
-	G  = C / math.Exp2(7.0/12)
-	Gs = C / math.Exp2(8.0/12)
-	Ab = Gs
-	A  = C / math.Exp2(9.0/12)
-	As = C / math.Exp2(10.0/12)
-	Bb = As
-	B  = C / math.Exp2(11.0/12)
+	cRaw = sampleRate / 261.625565
+	C    = clock(cRaw)
+	Cs   = clock(cRaw / math.Exp2(1.0/12))
+	Db   = Cs
+	D    = clock(cRaw / math.Exp2(2.0/12))
+	Ds   = clock(cRaw / math.Exp2(3.0/12))
+	Eb   = Ds
+	E    = clock(cRaw / math.Exp2(4.0/12))
+	F    = clock(cRaw / math.Exp2(5.0/12))
+	Fs   = clock(cRaw / math.Exp2(6.0/12))
+	Gb   = Fs
+	G    = clock(cRaw / math.Exp2(7.0/12))
+	Gs   = clock(cRaw / math.Exp2(8.0/12))
+	Ab   = Gs
+	A    = clock(cRaw / math.Exp2(9.0/12))
+	As   = clock(cRaw / math.Exp2(10.0/12))
+	Bb   = As
+	B    = clock(cRaw / math.Exp2(11.0/12))
 )
 
 var Cmajor = []gosynth.Clock{
-	clock(C),
-	clock(D),
-	clock(E),
-	clock(F),
-	clock(G),
-	clock(A),
-	clock(B),
-	clock(C),
+	C,
+	D,
+	E,
+	F,
+	G,
+	A,
+	B,
+	C / 2,
 }
 
 var Cbass = []gosynth.Clock{
-	clock(C) * 4,
-	clock(G) * 4,
-	clock(F) * 4,
-	clock(E) * 4,
+	C * 4,
+	G * 4,
+	F * 4,
+	E * 4,
 }
 
 var Criff = []gosynth.Clock{
-	clock(C),
-	clock(C),
-	clock(F),
-	clock(E),
-	clock(E),
-	clock(B),
-	clock(C / 2),
-	clock(B),
+	C,
+	C,
+	F,
+	E,
+	E,
+	B,
+	C / 2,
+	B,
 }
 
 func sine(out [][]float32) {
